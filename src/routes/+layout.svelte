@@ -2,7 +2,6 @@
 	import { page } from "$app/state";
 	import "./layout.css";
 	import "iconify-icon";
-	import logo from "/logo.svg";
 
 	let { children } = $props();
 	const path = page.url.pathname.split("/").filter(Boolean);
@@ -10,12 +9,11 @@
 
 <svelte:head>
 	<title>Peridot</title>
-	<link rel="icon" href={logo} />
 </svelte:head>
 
 <main class="min-h-screen flex flex-col">
 	<!-- navbar -->
-	<div class="flex items-center px-4 h-nav gap-3 bg-bg fixed top-0 left-0">
+	<div class="flex items-center px-4 h-nav gap-3 bg-bg w-full fixed top-0 left-0">
 		<a href="/" class="flex items-center gap-1">
 			<!-- <img src="/logo.svg" alt="Logo" class="size-3.5" /> -->
 			<header class="font-bold">PERIDOT</header>
