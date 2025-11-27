@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { page } from "$app/state";
+	import { onMount } from "svelte";
 	import "./layout.css";
 	import "iconify-icon";
 
 	let { children } = $props();
-	const path = page.url.pathname.split("/").filter(Boolean);
+	let path: string[] = $state([]);
+
+	$effect(() => {
+		path = page.url.pathname.split("/").filter(Boolean);
+	});
 </script>
 
 <svelte:head>
