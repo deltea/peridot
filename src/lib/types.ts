@@ -3,4 +3,8 @@ export interface Board {
   name: string;
   dateCreated: string;
   dateUpdated: string;
+  description?: string;
+  pieces?: Piece[];
 }
+
+export interface Piece {}

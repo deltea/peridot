@@ -15,7 +15,7 @@
       dateUpdated: new Date().toString(),
       dateCreated: new Date().toString(),
     }
-    await setEntry(data.root, `boards/${newBoard.name}.peridot`, newBoard);
+    await setEntry(data.root, `boards/${newBoard.slug}.peridot`, newBoard);
     location.reload();
   }
 
