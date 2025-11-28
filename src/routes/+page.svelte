@@ -40,14 +40,14 @@
       <button aria-label="options" class="absolute top-2 right-1 p-1 cursor-pointer" onclick={(e: MouseEvent) => e.stopPropagation()}>
         <iconify-icon icon="mdi:dots-vertical" class="text-2xl"></iconify-icon>
       </button>
-      <p class="font-bold text-accent text-lg">{board.name}</p>
-      <span class="text-sm text-fg mt-2">{getRelativeTime(board.updatedAt)}</span>
+      <p class="font-bold text-accent text-xl">{board.name}</p>
+      <span class="text-fg mt-2">{getRelativeTime(board.updatedAt)}</span>
     </a>
   {/each}
 
   <Dialog.Root>
     <Dialog.Trigger class="w-full aspect-square cursor-pointer border-2 flex gap-2 items-center justify-center border-bg-1 hover:border-accent bg-bg-1">
-      <p class="font-bold text-accent text-lg">+ CREATE BOARD</p>
+      <p class="font-bold text-accent text-base">+ CREATE BOARD</p>
     </Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80" />

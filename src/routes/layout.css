@@ -16,5 +16,5 @@
 }
 
 body {
-  @apply bg-bg text-fg text-sm font-mono selection:text-bg selection:bg-accent;
+  @apply bg-bg text-fg text-xs font-mono selection:text-bg selection:bg-accent;
 }
