@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from "$app/state";
-	import { onMount } from "svelte";
 	import "./layout.css";
 	import "iconify-icon";
 

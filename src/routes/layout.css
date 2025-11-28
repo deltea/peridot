@@ -1,8 +1,12 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
 @theme {
   --color-bg: #000000;
+  --color-bg-1: #151515;
+  --color-border: #222222;
   --color-fg: #ffffff;
+  --color-fg-1: #cccccc;
   /* --color-accent: #cba6f7; */
   --color-accent: #ffffff;
   --color-muted: #252525;
@@ -11,5 +15,5 @@
 }
 
 body {
-  @apply bg-bg text-fg text-sm font-mono;
+  @apply bg-bg text-fg text-sm font-mono selection:text-bg selection:bg-accent;
 }

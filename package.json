@@ -32,6 +32,8 @@
 		"vite": "^7.2.2"
 	},
 	"dependencies": {
-		"iconify-icon": "^3.0.2"
+		"bits-ui": "^2.14.4",
+		"iconify-icon": "^3.0.2",
+		"tailwindcss-animate": "^1.0.7"
 	}
 }
