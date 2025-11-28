@@ -30,7 +30,7 @@
       </div>
 
       <div class="absolute top-24 text-center w-full">
-        press <span class="bg-muted py-1 px-1.5">ctrl+n</span> to create a new piece
+        press <span class="bg-muted py-1 px-1.5">ctrl+n</span> to add a new piece
       </div>
       <div class="h-80 absolute bottom-0 left-0 bg-linear-to-t from-bg to-transparent w-full"></div>
     </div>
