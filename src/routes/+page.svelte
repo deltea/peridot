@@ -47,7 +47,7 @@
 
   <Dialog.Root>
     <Dialog.Trigger class="w-full aspect-square cursor-pointer border-2 flex gap-2 items-center justify-center border-bg-1 hover:border-accent bg-bg-1">
-      <p class="font-bold text-accent text-base">+ CREATE BOARD</p>
+      <p class="font-bold text-accent text-base">+ create board</p>
     </Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80" />
