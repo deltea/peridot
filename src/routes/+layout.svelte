@@ -23,7 +23,7 @@
 				<!-- <img src="/logo.svg" alt="Logo" class="size-3.5" /> -->
 				<header class="font-bold text-sm flex items-center gap-1">
 					<img src="/logo.svg" alt="Logo" class="size-3.5" />
-					<span>PERIDOT</span>
+					<span class="sm:block hidden">PERIDOT</span>
 				</header>
 			</a>
 
