@@ -5,6 +5,8 @@
   import { onMount, tick } from "svelte";
   import hotkeys from "hotkeys-js";
 
+  const COLUMNS = 2;
+
   let { data } = $props();
   let board: Board = $state({} as Board);
   let isAddingPiece = $state(false);
@@ -29,26 +31,13 @@
     hotkeys("ctrl+n", (event) => {
       event.preventDefault();
       isAddingPiece = true;
-      tick().then(() => {
-        newPieceInput?.focus();
-      });
+      tick().then(() => newPieceInput?.focus());
     });
   });
 </script>
 
 <div class="w-xl h-fit space-y-2">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
-    {#if board.pieces.length > 0}
-      <div class="space-y-2">
-        {#each board.pieces as piece}
-          {#if piece.type === "note"}
-            <div class="bg-bg-1 flex flex-col w-1/2 p-4">
-              {piece.content}
-            </div>
-          {/if}
-        {/each}
-      </div>
-    {/if}
     {#if isAddingPiece}
       <form onsubmit={addPiece} class="bg-bg-1 flex flex-col w-1/2 gap2">
         <input
@@ -69,6 +58,24 @@
           <button class="cursor-pointer size-6 bg-fg text-bg font-black text-base">+</button>
         </div>
       </form>
+    {/if}
+
+    {#if board.pieces.length > 0}
+      <div class="flex gap-2 flex-wrap">
+        {#each new Array(2) as _, col}
+          <div class="flex-1 flex flex-col items-center gap-2">
+            {#each board.pieces.slice().reverse() as piece, i}
+              {#if (col === 0 && i % 2 === 0) || (col === 1 && i % 2 !== 0)}
+                {#if piece.type === "note"}
+                  <div class="bg-bg-1 flex flex-col w-full p-4">
+                    {piece.content}
+                  </div>
+                {/if}
+              {/if}
+            {/each}
+          </div>
+        {/each}
+      </div>
     {/if}
   {:else}
     <div class="flex gap-8 h-full relative">
