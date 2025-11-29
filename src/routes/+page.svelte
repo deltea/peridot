@@ -51,7 +51,7 @@
     </Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80" />
-      <Dialog.Content class="bg-bg-1 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 outline-hidden fixed left-[50%] top-[50%] z-50 w-xl translate-x-[-50%] translate-y-[-50%] p-4">
+      <Dialog.Content class="bg-bg-1 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 outline-hidden fixed left-[50%] top-[50%] z-50 w-sm translate-x-[-50%] translate-y-[-50%] p-4">
         <Dialog.Title
           class="flex w-full font-bold justify-center text-sm mb-8"
         >
@@ -66,12 +66,13 @@
             class="w-full outline-none bg-border px-3 py-1.5"
             placeholder="new board"
             name="name"
+            required
           />
         </div>
 
         <div class="flex justify-center w-full">
           <button onclick={createBoard} class="bg-fg text-bg px-3 py-1.5 mt-8 font-bold cursor-pointer outline-none hover:bg-fg-1">
-            CREATE
+            create
           </button>
         </div>
       </Dialog.Content>

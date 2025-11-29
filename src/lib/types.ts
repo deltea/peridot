@@ -7,22 +7,24 @@ export interface Board {
   pieces: Piece[];
 }
 
-export interface Piece {
+export interface BasePiece {
   createdAt: string;
 }
 
-export interface NotePiece extends Piece {
+export interface NotePiece extends BasePiece {
   type: "note";
   content: string;
 }
 
-export interface ImagePiece extends Piece {
+export interface ImagePiece extends BasePiece {
   type: "image";
   url: string;
   caption?: string;
 }
 
-export interface LinkPiece extends Piece {
+export interface LinkPiece extends BasePiece {
   type: "link";
   url: string;
 }
+
+type Piece = NotePiece | ImagePiece | LinkPiece;

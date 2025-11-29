@@ -21,7 +21,7 @@
 		<div class="flex gap-3 items-center">
 			<a href="/" class="flex items-center gap-1">
 				<!-- <img src="/logo.svg" alt="Logo" class="size-3.5" /> -->
-				<header class="font-bold text-sm flex items-center gap-0">
+				<header class="font-bold text-sm flex items-center gap-1">
 					<img src="/logo.svg" alt="Logo" class="size-3.5" />
 					<span>PERIDOT</span>
 				</header>
@@ -42,7 +42,7 @@
 				+ add piece
 			</button>
 			<button class="bg-muted text-fg px-2 py-1 flex items-center gap-1 font-bold cursor-pointer outline-none hover:bg-muted-1">
-				<iconify-icon icon="mdi:pencil" class="text-sm"></iconify-icon>
+				<!-- <iconify-icon icon="mdi:pencil" class="text-sm"></iconify-icon> -->
 				<span>edit board</span>
 			</button>
 		</div>
