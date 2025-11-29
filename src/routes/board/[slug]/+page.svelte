@@ -67,7 +67,7 @@
             {#each board.pieces.slice().reverse() as piece, i}
               {#if (col === 0 && i % 2 === 0) || (col === 1 && i % 2 !== 0)}
                 {#if piece.type === "note"}
-                  <div class="bg-bg-1 flex flex-col w-full p-4">
+                  <div class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere">
                     {piece.content}
                   </div>
                 {/if}
