@@ -11,7 +11,7 @@
   let board: Board = $state({} as Board);
   let isAddingPiece = $state(false);
   let newPieceContent = $state("");
-  let newPieceInput: HTMLInputElement | null = $state(null);
+  let newPieceInput: HTMLTextAreaElement | null = $state(null);
 
   function addPiece() {
     if (newPieceContent.length === 0) return;
@@ -28,10 +28,17 @@
 
   onMount(async () => {
     board = await getEntry<Board>(data.root, `boards/${page.params.slug}.peridot`);
-    hotkeys("ctrl+n", (event) => {
-      event.preventDefault();
+    hotkeys.filter = (e: KeyboardEvent) => true;
+    hotkeys("ctrl+n", (e) => {
+      e.preventDefault();
       isAddingPiece = true;
       tick().then(() => newPieceInput?.focus());
+    });
+    hotkeys("cmd+enter", (e) => {
+      if (isAddingPiece) {
+        e.preventDefault();
+        addPiece();
+      }
     });
   });
 </script>
@@ -39,14 +46,13 @@
 <div class="w-xl h-fit space-y-2">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
     {#if isAddingPiece}
-      <form onsubmit={addPiece} class="bg-bg-1 flex flex-col w-1/2 gap2">
-        <input
+      <div class="bg-bg-1 flex flex-col w-1/2 gap2">
+        <textarea
           bind:value={newPieceContent}
           bind:this={newPieceInput}
-          type="text"
           placeholder="start typing here..."
-          class="w-full p-4 outline-none"
-        />
+          class="w-full p-4 outline-none resize-none"
+        ></textarea>
 
         <div class="flex justify-between px-2 pb-2">
           <div class="flex gap-2">
@@ -55,9 +61,12 @@
             </button> -->
           </div>
 
-          <button class="cursor-pointer size-6 bg-fg text-bg font-black text-base">+</button>
+          <button
+            onclick={addPiece}
+            class="cursor-pointer size-6 bg-fg text-bg font-black text-base"
+          >+</button>
         </div>
-      </form>
+      </div>
     {/if}
 
     {#if board.pieces.length > 0}
