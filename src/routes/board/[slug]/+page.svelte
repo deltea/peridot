@@ -27,7 +27,7 @@
 
   onMount(async () => {
     board = await getEntry<Board>(data.root, `boards/${page.params.slug}.peridot`);
-    hotkeys.filter = (e: KeyboardEvent) => true;
+    hotkeys.filter = () => true;
     hotkeys("ctrl+n", (e) => {
       e.preventDefault();
       isAddingPiece = true;
@@ -39,6 +39,10 @@
         addPiece();
       }
     });
+    hotkeys("esc", (e) => {
+      e.preventDefault();
+      isAddingPiece = false;
+    })
   });
 </script>
 
