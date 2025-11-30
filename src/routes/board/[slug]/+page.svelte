@@ -1,11 +1,9 @@
 <script lang="ts">
   import { page } from "$app/state";
-  import { getEntry } from "$lib/storage.js";
+  import { getEntry, setEntry } from "$lib/storage.js";
   import type { Board, NotePiece } from "$lib/types.js";
   import { onMount, tick } from "svelte";
   import hotkeys from "hotkeys-js";
-
-  const COLUMNS = 2;
 
   let { data } = $props();
   let board: Board = $state({} as Board);
@@ -22,6 +20,7 @@
         content: newPieceContent,
       } as NotePiece,
     ];
+    setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
     newPieceContent = "";
     isAddingPiece = false;
   }
