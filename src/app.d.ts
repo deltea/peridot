@@ -1,6 +1,6 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
-declare module "masonry-layout";
+declare module "svelte-masonry";
 
 declare global {
 	namespace App {

@@ -4,6 +4,7 @@
   import type { Board, NotePiece } from "$lib/types.js";
   import { onMount, tick } from "svelte";
   import hotkeys from "hotkeys-js";
+  import Masonry from "svelte-masonry";
 
   let { data } = $props();
   let board: Board = $state({} as Board);
@@ -25,12 +26,14 @@
     isAddingPiece = false;
   }
 
+  let refreshLayout: () => void = $state(() => {});
+
   onMount(async () => {
     board = await getEntry<Board>(data.root, `boards/${page.params.slug}.peridot`);
     hotkeys.filter = () => true;
     hotkeys("ctrl+n", (e) => {
       e.preventDefault();
-      isAddingPiece = true;
+      isAddingPiece = !isAddingPiece;
       tick().then(() => newPieceInput?.focus());
     });
     hotkeys("cmd+enter", (e) => {
@@ -42,53 +45,46 @@
     hotkeys("esc", (e) => {
       e.preventDefault();
       isAddingPiece = false;
-    })
+    });
   });
 </script>
 
-<div class="w-xl h-fit space-y-2">
+<div class="w-4xl px-8 h-fit space-y-2">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
-    {#if isAddingPiece}
-      <div class="bg-bg-1 flex flex-col w-1/2 gap2">
-        <textarea
-          bind:value={newPieceContent}
-          bind:this={newPieceInput}
-          placeholder="start typing here..."
-          class="w-full p-4 outline-none resize-none"
-        ></textarea>
+    <Masonry stretchFirst={isAddingPiece} gridGap={"0.5rem"} bind:refreshLayout>
+      {#if isAddingPiece}
+        <div class="bg-bg-1 flex flex-col w-full">
+          <textarea
+            bind:value={newPieceContent}
+            bind:this={newPieceInput}
+            placeholder="start typing here..."
+            class="w-full p-4 outline-none resize-none"
+          ></textarea>
 
-        <div class="flex justify-between px-2 pb-2">
-          <div class="flex gap-2">
-            <!-- <button aria-label="button" class="cursor-pointer size-6 bg-muted-1 text-fg font-black text-base flex justify-center items-center">
-              <iconify-icon icon="material-symbols:upload" class="text-lg"></iconify-icon>
-            </button> -->
+          <div class="flex justify-between px-2 pb-2">
+            <div class="flex gap-2">
+              <!-- <button aria-label="button" class="cursor-pointer size-6 bg-muted-1 text-fg font-black text-base flex justify-center items-center">
+                <iconify-icon icon="material-symbols:upload" class="text-lg"></iconify-icon>
+              </button> -->
+            </div>
+
+            <button
+              onclick={addPiece}
+              class="cursor-pointer size-6 bg-fg text-bg font-black text-base"
+            >+</button>
           </div>
-
-          <button
-            onclick={addPiece}
-            class="cursor-pointer size-6 bg-fg text-bg font-black text-base"
-          >+</button>
         </div>
-      </div>
-    {/if}
-
-    {#if board.pieces.length > 0}
-      <div class="flex gap-2 flex-wrap">
-        {#each new Array(2) as _, col}
-          <div class="flex-1 flex flex-col items-center gap-2">
-            {#each board.pieces.slice().reverse() as piece, i}
-              {#if (col === 0 && i % 2 === 0) || (col === 1 && i % 2 !== 0)}
-                {#if piece.type === "note"}
-                  <div class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere">
-                    {piece.content}
-                  </div>
-                {/if}
-              {/if}
-            {/each}
-          </div>
+      {/if}
+      {#if board.pieces.length > 0}
+        {#each board.pieces.slice().reverse() as piece, i}
+          {#if piece.type === "note"}
+            <p class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
+              {piece.content}
+            </p>
+          {/if}
         {/each}
-      </div>
-    {/if}
+      {/if}
+    </Masonry>
   {:else}
     <div class="flex gap-8 h-full relative">
       <div class="grow flex flex-col gap-8 items-center h-full">
