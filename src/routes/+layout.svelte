@@ -48,7 +48,7 @@
 		</div>
 	</div>
 
-	<div class="mt-nav flex justify-center grow pt-4">
+	<div class="mt-nav flex justify-center grow py-6">
 		{@render children()}
 	</div>
 </main>

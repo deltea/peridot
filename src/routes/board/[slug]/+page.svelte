@@ -1,16 +1,17 @@
 <script lang="ts">
   import { page } from "$app/state";
-  import { getEntry, setEntry } from "$lib/storage.js";
-  import type { Board, NotePiece } from "$lib/types.js";
+  import { setEntry } from "$lib/storage.js";
+  import type { Board, ImagePiece, NotePiece } from "$lib/types.js";
   import { onMount, tick } from "svelte";
   import hotkeys from "hotkeys-js";
   import Masonry from "svelte-masonry";
 
   let { data } = $props();
-  let board: Board = $state({} as Board);
+  let board: Board = $state(data.board);
   let isAddingPiece = $state(false);
   let newPieceContent = $state("");
   let newPieceInput: HTMLTextAreaElement | null = $state(null);
+  let refreshLayout: () => void = $state(() => {});
 
   function addPiece() {
     if (newPieceContent.length === 0) return;
@@ -24,12 +25,41 @@
     setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
     newPieceContent = "";
     isAddingPiece = false;
+    refreshLayout();
   }
 
-  let refreshLayout: () => void = $state(() => {});
+  function handlePaste(e: ClipboardEvent) {
+    e.preventDefault();
+    const pasted = e.clipboardData?.items;
+    if (!pasted) return;
+    for (const item of pasted) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            const imgUrl = event.target?.result as string;
+            board.pieces = [
+              ...board.pieces,
+              {
+                type: "image",
+                url: imgUrl,
+                caption: "",
+              } as ImagePiece,
+            ];
+            await setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
+            refreshLayout();
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+  }
 
   onMount(async () => {
-    board = await getEntry<Board>(data.root, `boards/${page.params.slug}.peridot`);
+    document.addEventListener("paste", handlePaste);
+
+    // keyboard hotkeys
     hotkeys.filter = () => true;
     hotkeys("ctrl+n", (e) => {
       e.preventDefault();
@@ -49,7 +79,7 @@
   });
 </script>
 
-<div class="w-4xl px-8 h-fit space-y-2">
+<div class="w-4xl mx-8 h-fit space-y-2">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
     <Masonry stretchFirst={isAddingPiece} gridGap={"0.5rem"} bind:refreshLayout>
       {#if isAddingPiece}
@@ -81,6 +111,8 @@
             <p class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
               {piece.content}
             </p>
+          {:else if piece.type === "image"}
+            <img src={piece.url} alt={piece.caption} class="w-full object-contain" />
           {/if}
         {/each}
       {/if}
