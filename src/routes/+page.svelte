@@ -4,7 +4,7 @@
   import { onMount } from "svelte";
   import type { Board } from "$lib/types";
   import { getEntries, getEntry, setEntry } from "$lib/storage.js";
-  import { Dialog, Label } from "bits-ui";
+  import { Dialog } from "bits-ui";
 
   let { data } = $props();
   let boards: Board[] = $state([]);
