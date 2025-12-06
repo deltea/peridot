@@ -14,6 +14,7 @@
   let newPieceInput: HTMLTextAreaElement | null = $state(null);
   let refreshLayout: () => void = $state(() => {});
   let selected: Piece[] = $state([]);
+  let isMultiSelect = false;
 
   $effect(() => {
     if (board.pieces) {
@@ -106,10 +107,14 @@
   }
 
   function selectPiece(piece: Piece) {
-    if (selected.includes(piece)) {
-      selected = selected.filter((p) => p !== piece);
+    if (isMultiSelect) {
+      if (selected.includes(piece)) {
+        selected = selected.filter((p) => p !== piece);
+      } else {
+        selected = [...selected, piece];
+      }
     } else {
-      selected = [...selected, piece];
+      selected = [piece];
     }
   }
 
@@ -123,6 +128,16 @@
   onMount(() => {
     document.addEventListener("paste", handlePaste);
     document.addEventListener("click", clickOutside);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Shift") {
+        isMultiSelect = true;
+      }
+    });
+    document.addEventListener("keyup", (e) => {
+      if (e.key === "Shift") {
+        isMultiSelect = false;
+      }
+    });
 
     // hotkeys
     hotkeys.filter = () => true;
@@ -163,6 +178,7 @@
       hotkeys.unbind("ctrl+n");
       hotkeys.unbind("cmd+enter");
       hotkeys.unbind("esc");
+      hotkeys.unbind("shift");
       hotkeys.unbind("backspace");
     };
   });
