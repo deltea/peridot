@@ -32,9 +32,11 @@
 		"vite": "^7.2.2"
 	},
 	"dependencies": {
+		"@tailwindcss/typography": "^0.5.19",
 		"bits-ui": "^2.14.4",
 		"hotkeys-js": "^4.0.0-beta.7",
 		"iconify-icon": "^3.0.2",
+		"svelte-markdown": "^0.4.1",
 		"svelte-masonry": "^0.1.5",
 		"tailwindcss-animate": "^1.0.7"
 	}

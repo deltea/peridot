@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Piece } from "$lib/types.js";
+  import SvelteMarkdown from "svelte-markdown";
 
   let { piece, selected, refreshLayout, selectPiece }: {
     piece: Piece;
@@ -19,7 +20,7 @@
 >
   {#if piece.type === "note"}
     <p class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
-      {piece.content}
+      <SvelteMarkdown source={piece.content} />
     </p>
   {:else if piece.type === "link"}
     <div class="bg-bg-1 flex flex-col w-full p-4">

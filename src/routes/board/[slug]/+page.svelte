@@ -124,7 +124,7 @@
     document.addEventListener("paste", handlePaste);
     document.addEventListener("click", clickOutside);
 
-    // keyboard hotkeys
+    // hotkeys
     hotkeys.filter = () => true;
     hotkeys("ctrl+n", (e) => {
       e.preventDefault();
@@ -141,7 +141,14 @@
       e.preventDefault();
       isAddingPiece = false;
     });
+
+    // selection hotkeys
     hotkeys("backspace", (e) => {
+      const activeElement = document.activeElement;
+      if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA" || (activeElement as HTMLElement).isContentEditable)) {
+        return;
+      }
+
       if (selected.length > 0) {
         e.preventDefault();
         board.pieces = board.pieces.filter((p) => !selected.includes(p));

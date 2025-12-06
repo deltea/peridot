@@ -20,7 +20,7 @@
 
 <main class="min-h-screen flex flex-col">
 	<!-- navbar -->
-	<div class="flex justify-between items-center text-xs px-4 h-nav bg-bg w-full fixed top-0 left-0 z-50">
+	<div class="flex justify-between items-center px-4 h-nav bg-bg w-full fixed top-0 left-0 z-50">
 		<div class="flex gap-3 items-center">
 			<a href="/" class="flex items-center gap-1">
 				<!-- <img src="/logo.svg" alt="Logo" class="size-3.5" /> -->
