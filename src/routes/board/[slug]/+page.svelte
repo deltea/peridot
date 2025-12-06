@@ -35,10 +35,10 @@
 
   function handlePaste(e: ClipboardEvent) {
     e.preventDefault();
-    console.log(page.params.slug);
     const pasted = e.clipboardData?.items;
     if (!pasted) return;
     for (const item of pasted) {
+      console.log(item.type);
       if (item.type.startsWith("image/")) {
         const file = item.getAsFile();
         if (file) {
@@ -57,6 +57,17 @@
           };
           reader.readAsDataURL(file);
         }
+      } else if (item.type === "text/plain") {
+        item.getAsString(async (text) => {
+          board.pieces = [
+            ...board.pieces,
+            {
+              type: "note",
+              content: text,
+            } as NotePiece,
+          ];
+          await setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
+        });
       }
     }
   }
