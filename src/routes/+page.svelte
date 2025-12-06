@@ -1,13 +1,12 @@
 <script lang="ts">
   import "iconify-icon";
   import { getRelativeTime } from "$lib/utils.js";
-  import { onMount } from "svelte";
   import type { Board } from "$lib/types";
-  import { getEntries, getEntry, setEntry } from "$lib/storage.js";
+  import { setEntry } from "$lib/storage.js";
   import { Dialog } from "bits-ui";
 
   let { data } = $props();
-  let boards: Board[] = $state([]);
+  let boards: Board[] = $state(data.boards);
   let boardName: string = $state("");
 
   async function createBoard() {
@@ -21,14 +20,6 @@
     await setEntry(data.root, `boards/${newBoard.slug}.peridot`, newBoard);
     location.reload();
   }
-
-  onMount(async () => {
-    const entries = await getEntries(data.root, "boards");
-    entries.forEach(async entry => {
-      const board = await getEntry<Board>(data.root, `boards/${entry}`);
-      boards = [...boards, board];
-    });
-  });
 </script>
 
 <div class="grid grid-cols-2 gap-4 w-xl h-fit">

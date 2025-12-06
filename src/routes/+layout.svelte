@@ -12,7 +12,10 @@
 </script>
 
 <svelte:head>
-	<title>Peridot</title>
+	<title>
+		peridot
+		{path.length > 0 ? ` > ${path[path.length - 1]}` : ""}
+	</title>
 </svelte:head>
 
 <main class="min-h-screen flex flex-col">

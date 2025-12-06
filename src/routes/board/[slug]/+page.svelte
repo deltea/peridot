@@ -13,6 +13,12 @@
   let newPieceInput: HTMLTextAreaElement | null = $state(null);
   let refreshLayout: () => void = $state(() => {});
 
+  $effect(() => {
+    if (board.pieces) {
+      tick().then(() => refreshLayout());
+    }
+  });
+
   function addPiece() {
     if (newPieceContent.length === 0) return;
     board.pieces = [
@@ -25,11 +31,11 @@
     setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
     newPieceContent = "";
     isAddingPiece = false;
-    refreshLayout();
   }
 
   function handlePaste(e: ClipboardEvent) {
     e.preventDefault();
+    console.log(page.params.slug);
     const pasted = e.clipboardData?.items;
     if (!pasted) return;
     for (const item of pasted) {
@@ -48,7 +54,6 @@
               } as ImagePiece,
             ];
             await setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
-            refreshLayout();
           };
           reader.readAsDataURL(file);
         }
@@ -56,7 +61,7 @@
     }
   }
 
-  onMount(async () => {
+  onMount(() => {
     document.addEventListener("paste", handlePaste);
 
     // keyboard hotkeys
@@ -76,12 +81,19 @@
       e.preventDefault();
       isAddingPiece = false;
     });
+
+    return () => {
+      document.removeEventListener("paste", handlePaste);
+      hotkeys.unbind("ctrl+n");
+      hotkeys.unbind("cmd+enter");
+      hotkeys.unbind("esc");
+    };
   });
 </script>
 
 <div class="w-4xl mx-8 h-fit space-y-2">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
-    <Masonry stretchFirst={isAddingPiece} gridGap={"0.5rem"} bind:refreshLayout>
+    <Masonry items={board.pieces} stretchFirst={isAddingPiece} gridGap={"0.5rem"} bind:refreshLayout>
       {#if isAddingPiece}
         <div class="bg-bg-1 flex flex-col w-full">
           <textarea
@@ -112,7 +124,7 @@
               {piece.content}
             </p>
           {:else if piece.type === "image"}
-            <img src={piece.url} alt={piece.caption} class="w-full object-contain" />
+            <img src={piece.url} alt={piece.caption} onload={refreshLayout} class="w-full object-contain" />
           {/if}
         {/each}
       {/if}
