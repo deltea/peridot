@@ -46,6 +46,9 @@ body {
   h2 {
     @apply text-base font-semibold mb-2;
   }
+  hr {
+    @apply border border-muted my-4;
+  }
   ul {
     @apply list-disc ml-5;
   }
