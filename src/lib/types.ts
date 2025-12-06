@@ -27,4 +27,4 @@ export interface LinkPiece extends BasePiece {
   url: string;
 }
 
-type Piece = NotePiece | ImagePiece | LinkPiece;
+export type Piece = NotePiece | ImagePiece | LinkPiece;

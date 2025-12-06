@@ -1,10 +1,11 @@
 <script lang="ts">
   import { page } from "$app/state";
   import { setEntry } from "$lib/storage.js";
-  import type { Board, ImagePiece, LinkPiece, NotePiece } from "$lib/types.js";
+  import type { Board, ImagePiece, LinkPiece, Piece, NotePiece } from "$lib/types.js";
   import { onMount, tick } from "svelte";
   import hotkeys from "hotkeys-js";
   import Masonry from "svelte-masonry";
+  import PieceComponent from "$lib/components/Piece.svelte";
 
   let { data } = $props();
   let board: Board = $state(data.board);
@@ -12,6 +13,7 @@
   let newPieceContent = $state("");
   let newPieceInput: HTMLTextAreaElement | null = $state(null);
   let refreshLayout: () => void = $state(() => {});
+  let selected: Piece[] = $state([]);
 
   $effect(() => {
     if (board.pieces) {
@@ -103,8 +105,24 @@
     }
   }
 
+  function selectPiece(piece: Piece) {
+    if (selected.includes(piece)) {
+      selected = selected.filter((p) => p !== piece);
+    } else {
+      selected = [...selected, piece];
+    }
+  }
+
+  function clickOutside(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    if (!target.closest("#piece")) {
+      selected = [];
+    }
+  }
+
   onMount(() => {
     document.addEventListener("paste", handlePaste);
+    document.addEventListener("click", clickOutside);
 
     // keyboard hotkeys
     hotkeys.filter = () => true;
@@ -123,12 +141,22 @@
       e.preventDefault();
       isAddingPiece = false;
     });
+    hotkeys("backspace", (e) => {
+      if (selected.length > 0) {
+        e.preventDefault();
+        board.pieces = board.pieces.filter((p) => !selected.includes(p));
+        setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
+        selected = [];
+      }
+    });
 
     return () => {
       document.removeEventListener("paste", handlePaste);
+      document.removeEventListener("click", clickOutside);
       hotkeys.unbind("ctrl+n");
       hotkeys.unbind("cmd+enter");
       hotkeys.unbind("esc");
+      hotkeys.unbind("backspace");
     };
   });
 </script>
@@ -153,19 +181,14 @@
           </div>
         </div>
       {/if}
+
       {#if board.pieces.length > 0}
         {#each board.pieces.slice().reverse() as piece, i}
-          {#if piece.type === "note"}
-            <p class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
-              {piece.content}
-            </p>
-          {:else if piece.type === "link"}
-            <a href={piece.url} target="_blank" class="underline bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
-              {piece.url}
-            </a>
-          {:else if piece.type === "image"}
-            <img src={piece.url} alt={piece.caption} onload={refreshLayout} class="w-full object-contain" />
-          {/if}
+          <PieceComponent
+            {piece}
+            selected={selected.includes(piece)}
+            {selectPiece} {refreshLayout}
+          />
         {/each}
       {/if}
     </Masonry>
