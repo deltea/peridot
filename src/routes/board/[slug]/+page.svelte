@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/state";
   import { setEntry } from "$lib/storage.js";
-  import type { Board, ImagePiece, NotePiece } from "$lib/types.js";
+  import type { Board, ImagePiece, LinkPiece, NotePiece } from "$lib/types.js";
   import { onMount, tick } from "svelte";
   import hotkeys from "hotkeys-js";
   import Masonry from "svelte-masonry";
@@ -21,24 +21,40 @@
 
   function addPiece() {
     if (newPieceContent.length === 0) return;
-    board.pieces = [
-      ...board.pieces,
-      {
-        type: "note",
-        content: newPieceContent,
-      } as NotePiece,
-    ];
+
+    try {
+      new URL(newPieceContent);
+      board.pieces = [
+        ...board.pieces,
+        {
+          type: "link",
+          url: newPieceContent,
+        } as LinkPiece,
+      ];
+    } catch {
+      board.pieces = [
+        ...board.pieces,
+        {
+          type: "note",
+          content: newPieceContent,
+        } as NotePiece,
+      ];
+    }
     setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
     newPieceContent = "";
     isAddingPiece = false;
   }
 
   function handlePaste(e: ClipboardEvent) {
-    e.preventDefault();
+    // don't paste if focused on an input
+    const activeElement = document.activeElement;
+    if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA" || (activeElement as HTMLElement).isContentEditable)) {
+      return;
+    }
+
     const pasted = e.clipboardData?.items;
     if (!pasted) return;
     for (const item of pasted) {
-      console.log(item.type);
       if (item.type.startsWith("image/")) {
         const file = item.getAsFile();
         if (file) {
@@ -58,16 +74,31 @@
           reader.readAsDataURL(file);
         }
       } else if (item.type === "text/plain") {
-        item.getAsString(async (text) => {
-          board.pieces = [
-            ...board.pieces,
-            {
-              type: "note",
-              content: text,
-            } as NotePiece,
-          ];
-          await setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
-        });
+        const text = e.clipboardData?.getData("text/plain");
+        if (text) {
+          // check if text is a valid url
+          try {
+            new URL(text);
+            board.pieces = [
+              ...board.pieces,
+              {
+                type: "link",
+                url: text,
+              } as LinkPiece,
+            ];
+            setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
+          } catch {
+            // not a valid url, add as note
+            board.pieces = [
+              ...board.pieces,
+              {
+                type: "note",
+                content: text,
+              } as NotePiece,
+            ];
+            setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
+          }
+        }
       }
     }
   }
@@ -115,12 +146,6 @@
           ></textarea>
 
           <div class="flex justify-between px-2 pb-2">
-            <div class="flex gap-2">
-              <!-- <button aria-label="button" class="cursor-pointer size-6 bg-muted-1 text-fg font-black text-base flex justify-center items-center">
-                <iconify-icon icon="material-symbols:upload" class="text-lg"></iconify-icon>
-              </button> -->
-            </div>
-
             <button
               onclick={addPiece}
               class="cursor-pointer size-6 bg-fg text-bg font-black text-base"
@@ -134,6 +159,10 @@
             <p class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
               {piece.content}
             </p>
+          {:else if piece.type === "link"}
+            <a href={piece.url} target="_blank" class="underline bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
+              {piece.url}
+            </a>
           {:else if piece.type === "image"}
             <img src={piece.url} alt={piece.caption} onload={refreshLayout} class="w-full object-contain" />
           {/if}
