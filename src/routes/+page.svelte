@@ -5,6 +5,8 @@
   import { setEntry } from "$lib/storage.js";
   import { Dialog } from "bits-ui";
 
+  import Nav from "$lib/components/Nav.svelte";
+
   let { data } = $props();
   let boards: Board[] = $state(data.boards);
   let boardName: string = $state("");
@@ -21,6 +23,17 @@
     location.reload();
   }
 </script>
+
+<Nav path="boards">
+  <div class="flex gap-3">
+    <button class="bg-fg text-bg px-2.5 py-1 font-bold cursor-pointer outline-none hover:bg-fg-1">
+      + create board
+    </button>
+    <button class="bg-muted text-fg px-2.5 py-1 flex items-center gap-1 font-bold cursor-pointer outline-none hover:bg-muted-1">
+      <span>settings</span>
+    </button>
+  </div>
+</Nav>
 
 <div class="grid grid-cols-2 gap-4 w-xl h-fit">
   {#each boards as board}

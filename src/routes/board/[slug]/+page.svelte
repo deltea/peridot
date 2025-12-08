@@ -5,7 +5,9 @@
   import { onMount, tick } from "svelte";
   import hotkeys from "hotkeys-js";
   import Masonry from "svelte-masonry";
+
   import PieceComponent from "$lib/components/Piece.svelte";
+  import Nav from "$lib/components/Nav.svelte";
 
   let { data } = $props();
   let board: Board = $state(data.board);
@@ -114,7 +116,12 @@
         selected = [...selected, piece];
       }
     } else {
-      selected = [piece];
+      if (selected.includes(piece) && selected.length === 1) {
+        selected = [];
+        return;
+      } else {
+        selected = [piece];
+      }
     }
   }
 
@@ -184,6 +191,17 @@
     };
   });
 </script>
+
+<Nav path="boards/{board.name}">
+  <div class="flex gap-3">
+    <button class="bg-fg text-bg px-2.5 py-1 font-bold cursor-pointer outline-none hover:bg-fg-1">
+      + add piece
+    </button>
+    <button class="bg-muted text-fg px-2.5 py-1 flex items-center gap-1 font-bold cursor-pointer outline-none hover:bg-muted-1">
+      <span>edit board</span>
+    </button>
+  </div>
+</Nav>
 
 <div class="w-4xl mx-8 h-fit space-y-2">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
