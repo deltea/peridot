@@ -5,10 +5,12 @@
   import { onMount, tick } from "svelte";
   import hotkeys from "hotkeys-js";
   import Masonry from "svelte-masonry";
+  import { isValidURL } from "$lib/utils.js";
 
   import PieceComponent from "$components/Piece.svelte";
   import Nav from "$components/Nav.svelte";
   import Button from "$components/Button.svelte";
+  import PlaceholderPieces from "$components/PlaceholderPieces.svelte";
 
   let { data } = $props();
   let board: Board = $state(data.board);
@@ -25,25 +27,27 @@
     }
   });
 
+  function getFocusedOnInput(): boolean {
+    const activeElement = document.activeElement;
+    return !!activeElement && (
+      activeElement.tagName === "INPUT" ||
+      activeElement.tagName === "TEXTAREA" ||
+      (activeElement as HTMLElement).isContentEditable
+    );
+  }
+
   function addPiece() {
     if (newPieceContent.length === 0) return;
 
-    try {
-      new URL(newPieceContent);
+    if (isValidURL(newPieceContent)) {
       board.pieces = [
         ...board.pieces,
-        {
-          type: "link",
-          url: newPieceContent,
-        } as LinkPiece,
+        { type: "link", url: newPieceContent } as LinkPiece,
       ];
-    } catch {
+    } else {
       board.pieces = [
         ...board.pieces,
-        {
-          type: "note",
-          content: newPieceContent,
-        } as NotePiece,
+        { type: "note", content: newPieceContent } as NotePiece,
       ];
     }
     setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
@@ -52,58 +56,37 @@
   }
 
   function handlePaste(e: ClipboardEvent) {
-    // don't paste if focused on an input
-    const activeElement = document.activeElement;
-    if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA" || (activeElement as HTMLElement).isContentEditable)) {
-      return;
-    }
+    if (getFocusedOnInput()) return;
 
     const pasted = e.clipboardData?.items;
     if (!pasted) return;
     for (const item of pasted) {
       if (item.type.startsWith("image/")) {
         const file = item.getAsFile();
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = async (event) => {
-            const imgUrl = event.target?.result as string;
-            board.pieces = [
-              ...board.pieces,
-              {
-                type: "image",
-                url: imgUrl,
-                caption: "",
-              } as ImagePiece,
-            ];
-            await setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
-          };
-          reader.readAsDataURL(file);
-        }
+        if (!file) continue;
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const imgUrl = e.target?.result as string;
+          board.pieces = [
+            ...board.pieces,
+            { type: "image", url: imgUrl } as ImagePiece,
+          ];
+          await setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
+        };
+        reader.readAsDataURL(file);
       } else if (item.type === "text/plain") {
         const text = e.clipboardData?.getData("text/plain");
-        if (text) {
-          // check if text is a valid url
-          try {
-            new URL(text);
-            board.pieces = [
-              ...board.pieces,
-              {
-                type: "link",
-                url: text,
-              } as LinkPiece,
-            ];
-            setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
-          } catch {
-            // not a valid url, add as note
-            board.pieces = [
-              ...board.pieces,
-              {
-                type: "note",
-                content: text,
-              } as NotePiece,
-            ];
-            setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
-          }
+        if (!text) continue;
+        if (isValidURL(text)) {
+          board.pieces = [
+            ...board.pieces,
+            { type: "link", url: text } as LinkPiece,
+          ];
+        } else {
+          board.pieces = [
+            ...board.pieces,
+            { type: "note", content: text } as NotePiece,
+          ];
         }
       }
     }
@@ -137,7 +120,6 @@
     document.addEventListener("paste", handlePaste);
     document.addEventListener("click", clickOutside);
 
-    // TODO: make this better
     document.addEventListener("keydown", (e) => {
       if (e.key === "Shift") isMultiSelect = true;
     });
@@ -165,11 +147,7 @@
 
     // selection hotkeys
     hotkeys("backspace", (e) => {
-      const activeElement = document.activeElement;
-      if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA" || (activeElement as HTMLElement).isContentEditable)) {
-        return;
-      }
-
+      if (getFocusedOnInput()) return;
       if (selected.length > 0) {
         e.preventDefault();
         board.pieces = board.pieces.filter((p) => !selected.includes(p));
@@ -202,7 +180,12 @@
 
 <div class="w-4xl mx-8 h-fit space-y-2">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
-    <Masonry items={board.pieces} stretchFirst={isAddingPiece} gridGap={"0.5rem"} bind:refreshLayout>
+    <Masonry
+      items={board.pieces}
+      stretchFirst={isAddingPiece}
+      gridGap={"0.5rem"}
+      bind:refreshLayout
+    >
       {#if isAddingPiece}
         <div class="bg-bg-1 flex flex-col w-full">
           <textarea
@@ -212,7 +195,8 @@
             class="w-full p-4 outline-none resize-none"
           ></textarea>
 
-          <div class="flex justify-between px-2 pb-2">
+          <div class="flex justify-between px-4 pb-4 pt-2">
+            <div></div>
             <button
               onclick={addPiece}
               class="cursor-pointer size-6 bg-fg text-bg font-black text-base"
@@ -226,28 +210,13 @@
           <PieceComponent
             {piece}
             selected={selected.includes(piece)}
-            {selectPiece} {refreshLayout}
+            {selectPiece}
+            {refreshLayout}
           />
         {/each}
       {/if}
     </Masonry>
   {:else}
-    <div class="flex gap-8 h-full relative">
-      <div class="grow flex flex-col gap-8 items-center h-full">
-        <div class="w-full h-40 bg-bg-1"></div>
-        <div class="w-full h-20 bg-bg-1"></div>
-        <div class="w-full h-80 bg-bg-1"></div>
-      </div>
-      <div class="grow flex flex-col gap-8 items-center">
-        <div class="w-full h-80 bg-bg-1"></div>
-        <div class="w-full h-40 bg-bg-1"></div>
-        <div class="w-full h-20 bg-bg-1"></div>
-      </div>
-
-      <div class="absolute top-24 text-center w-full">
-        press <span class="bg-muted py-1 px-1.5">ctrl+n</span> to add a new piece
-      </div>
-      <div class="h-2/3 absolute bottom-0 left-0 bg-linear-to-t from-bg to-transparent w-full"></div>
-    </div>
+    <PlaceholderPieces />
   {/if}
 </div>

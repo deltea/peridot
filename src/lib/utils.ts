@@ -34,3 +34,12 @@ export function cn(...classes: ClassValue[]): string {
 export function slugify(text: string): string {
   return text.toLowerCase().replace(/\s+/g, "-");
 }
+
+export function isValidURL(str: string): boolean {
+  try {
+    new URL(str);
+    return true;
+  } catch {
+    return false;
+  }
+}
