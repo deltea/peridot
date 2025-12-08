@@ -116,6 +116,11 @@
     }
   }
 
+  function focusOnAddPiece() {
+    isAddingPiece = !isAddingPiece;
+    tick().then(() => newPieceInput?.focus());
+  }
+
   onMount(() => {
     document.addEventListener("paste", handlePaste);
     document.addEventListener("click", clickOutside);
@@ -131,8 +136,7 @@
     hotkeys.filter = () => true;
     hotkeys("ctrl+n", (e) => {
       e.preventDefault();
-      isAddingPiece = !isAddingPiece;
-      tick().then(() => newPieceInput?.focus());
+      focusOnAddPiece();
     });
     hotkeys("cmd+enter", (e) => {
       if (isAddingPiece) {
@@ -173,7 +177,7 @@
 
 <Nav path="boards/{board.name}">
   <div class="flex gap-3">
-    <Button>+ add piece</Button>
+    <Button onclick={focusOnAddPiece}>+ add piece</Button>
     <Button variant="secondary">edit board</Button>
   </div>
 </Nav>

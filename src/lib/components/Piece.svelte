@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Piece } from "$lib/types.js";
+  import { cn } from "$lib/utils";
   import SvelteMarkdown from "svelte-markdown";
 
   let { piece, selected, refreshLayout, selectPiece }: {
@@ -16,7 +17,10 @@
   ondragstart={e => e.preventDefault()}
   onclick={() => selectPiece(piece)}
   id="piece"
-  class="w-full relative {selected ? "ring-2" : ""}"
+  class={cn(
+    "w-full relative",
+    { "ring-2 ring-fg": selected }
+  )}
 >
   {#if piece.type === "note"}
     <p class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
