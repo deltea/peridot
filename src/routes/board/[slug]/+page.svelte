@@ -128,15 +128,13 @@
   onMount(() => {
     document.addEventListener("paste", handlePaste);
     document.addEventListener("click", clickOutside);
+
+    // TODO: make this better
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Shift") {
-        isMultiSelect = true;
-      }
+      if (e.key === "Shift") isMultiSelect = true;
     });
     document.addEventListener("keyup", (e) => {
-      if (e.key === "Shift") {
-        isMultiSelect = false;
-      }
+      if (e.key === "Shift") isMultiSelect = false;
     });
 
     // hotkeys
@@ -175,6 +173,9 @@
     return () => {
       document.removeEventListener("paste", handlePaste);
       document.removeEventListener("click", clickOutside);
+      document.removeEventListener("keydown", () => {});
+      document.removeEventListener("keyup", () => {});
+
       hotkeys.unbind("ctrl+n");
       hotkeys.unbind("cmd+enter");
       hotkeys.unbind("esc");
