@@ -1,37 +1,41 @@
 <script lang="ts">
   import "iconify-icon";
-  import { getRelativeTime } from "$lib/utils.js";
+  import { getRelativeTime, slugify } from "$lib/utils.js";
   import type { Board } from "$lib/types";
   import { setEntry } from "$lib/storage.js";
   import { Dialog } from "bits-ui";
+  import { goto } from "$app/navigation";
 
-  import Nav from "$lib/components/Nav.svelte";
+  import Nav from "$components/Nav.svelte";
+  import Button from "$components/Button.svelte";
 
   let { data } = $props();
   let boards: Board[] = $state(data.boards);
   let boardName: string = $state("");
+  let createBoardOpen: boolean = $state(false);
 
   async function createBoard() {
     const newBoard: Board = {
-      name: boardName || "new board",
-      slug: boardName.toLowerCase().replace(/\s+/g, "-"),
+      name: boardName,
+      slug: slugify(boardName),
       updatedAt: new Date().toString(),
       createdAt: new Date().toString(),
       pieces: []
     }
     await setEntry(data.root, `boards/${newBoard.slug}.peridot`, newBoard);
-    location.reload();
+    goto(`/board/${newBoard.slug}`);
   }
 </script>
 
 <Nav path="boards">
   <div class="flex gap-3">
-    <button class="bg-fg text-bg px-2.5 py-1 font-bold cursor-pointer outline-none hover:bg-fg-1">
+    <Button onclick={() => createBoardOpen = !createBoardOpen}>
       + create board
-    </button>
-    <button class="bg-muted text-fg px-2.5 py-1 flex items-center gap-1 font-bold cursor-pointer outline-none hover:bg-muted-1">
+    </Button>
+    <Button variant="secondary" class="gap-2">
+      <iconify-icon icon="mingcute:settings-3-fill" class="text-base"></iconify-icon>
       <span>settings</span>
-    </button>
+    </Button>
   </div>
 </Nav>
 
@@ -49,7 +53,7 @@
     </a>
   {/each}
 
-  <Dialog.Root>
+  <Dialog.Root open={createBoardOpen}>
     <Dialog.Trigger class="w-full aspect-square cursor-pointer border-2 flex gap-2 items-center justify-center border-bg-1 hover:border-accent bg-bg-1">
       <p class="font-bold text-accent text-base">+ create board</p>
     </Dialog.Trigger>
@@ -62,23 +66,25 @@
           create a board
         </Dialog.Title>
 
-        <div>
-          <label for="name" class="block font-bold mb-1">name:</label>
-          <input
-            bind:value={boardName}
-            id="name"
-            class="w-full outline-none bg-border px-3 py-1.5"
-            placeholder="new board"
-            name="name"
-            required
-          />
-        </div>
+        <form onsubmit={createBoard}>
+          <div>
+            <label for="name" class="block font-bold mb-1">name:</label>
+            <input
+              bind:value={boardName}
+              id="name"
+              class="w-full outline-none bg-border px-3 py-1.5"
+              placeholder="new board"
+              name="name"
+              required
+            />
+          </div>
 
-        <div class="flex justify-center w-full">
-          <button onclick={createBoard} class="bg-fg text-bg px-3 py-1.5 mt-8 font-bold cursor-pointer outline-none hover:bg-fg-1">
-            create
-          </button>
-        </div>
+          <div class="flex justify-center w-full">
+            <button type="submit" class="bg-fg text-bg px-3 py-1.5 mt-8 font-bold cursor-pointer outline-none hover:bg-fg-1">
+              create
+            </button>
+          </div>
+        </form>
       </Dialog.Content>
     </Dialog.Portal>
   </Dialog.Root>

@@ -6,8 +6,9 @@
   import hotkeys from "hotkeys-js";
   import Masonry from "svelte-masonry";
 
-  import PieceComponent from "$lib/components/Piece.svelte";
-  import Nav from "$lib/components/Nav.svelte";
+  import PieceComponent from "$components/Piece.svelte";
+  import Nav from "$components/Nav.svelte";
+  import Button from "$components/Button.svelte";
 
   let { data } = $props();
   let board: Board = $state(data.board);
@@ -194,12 +195,8 @@
 
 <Nav path="boards/{board.name}">
   <div class="flex gap-3">
-    <button class="bg-fg text-bg px-2.5 py-1 font-bold cursor-pointer outline-none hover:bg-fg-1">
-      + add piece
-    </button>
-    <button class="bg-muted text-fg px-2.5 py-1 flex items-center gap-1 font-bold cursor-pointer outline-none hover:bg-muted-1">
-      <span>edit board</span>
-    </button>
+    <Button>+ add piece</Button>
+    <Button variant="secondary">edit board</Button>
   </div>
 </Nav>
 

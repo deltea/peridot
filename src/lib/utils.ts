@@ -1,3 +1,6 @@
+import clsx, { type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
 export function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -22,4 +25,12 @@ export function getRelativeTime(dateStr: string): string {
   if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
   if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
   return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+}
+
+export function cn(...classes: ClassValue[]): string {
+  return twMerge(clsx(...classes));
+}
+
+export function slugify(text: string): string {
+  return text.toLowerCase().replace(/\s+/g, "-");
 }
