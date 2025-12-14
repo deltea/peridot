@@ -1,0 +1,2 @@
+- [ ] add more board settings like icon, description, and idk other stuff
+- [ ] add context menu to everything

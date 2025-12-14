@@ -56,20 +56,22 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Portal>
           <DropdownMenu.Content
-            class="bg-muted outline-hidden p-2 w-40"
+            class="bg-muted outline-hidden p-2 w-50"
             sideOffset={8}
           >
             <DropdownMenu.Item
-              class="px-3 py-1.5 cursor-pointer hover:bg-muted-1 outline-none"
+              class="px-3 py-1.5 cursor-pointer hover:bg-muted-1 outline-none flex items-center gap-2"
               onSelect={() => goto(`/board/${board.slug}`)}
             >
-              edit board
+              <iconify-icon icon="mdi:pencil" class="text-base"></iconify-icon>
+              <span>edit board</span>
             </DropdownMenu.Item>
             <DropdownMenu.Item
-              class="px-3 py-1.5 cursor-pointer hover:bg-muted-1 outline-none"
+              class="px-3 py-1.5 cursor-pointer hover:bg-muted-1 outline-none text-red-400 flex items-center gap-2"
               onSelect={() => deleteBoard(board.slug)}
             >
-              delete board
+              <iconify-icon icon="mdi:delete" class="text-base"></iconify-icon>
+              <span>delete board</span>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
