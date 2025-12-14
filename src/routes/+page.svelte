@@ -2,8 +2,8 @@
   import "iconify-icon";
   import { getRelativeTime, slugify } from "$lib/utils.js";
   import type { Board } from "$lib/types";
-  import { setEntry } from "$lib/storage.js";
-  import { Dialog } from "bits-ui";
+  import { deleteEntry, setEntry } from "$lib/storage.js";
+  import { Dialog, DropdownMenu } from "bits-ui";
   import { goto } from "$app/navigation";
 
   import Nav from "$components/Nav.svelte";
@@ -25,6 +25,11 @@
     await setEntry(data.root, `boards/${newBoard.slug}.peridot`, newBoard);
     goto(`/board/${newBoard.slug}`);
   }
+
+  async function deleteBoard(slug: string) {
+    await deleteEntry(data.root, `boards/${slug}.peridot`);
+    boards = boards.filter(board => board.slug !== slug);
+  }
 </script>
 
 <Nav path="boards">
@@ -41,16 +46,40 @@
 
 <div class="grid grid-cols-2 gap-4 w-xl h-fit">
   {#each boards as board}
-    <a
-      href={`/board/${board.slug}`}
-      class="w-full aspect-square border-2 flex flex-col items-center justify-center border-border hover:border-accent relative"
-    >
-      <button aria-label="options" class="absolute top-2 right-1 p-1 cursor-pointer" onclick={(e: MouseEvent) => e.stopPropagation()}>
-        <iconify-icon icon="mdi:dots-vertical" class="text-2xl"></iconify-icon>
-      </button>
-      <p class="font-bold text-accent text-xl">{board.name}</p>
-      <span class="text-fg mt-2">{getRelativeTime(board.updatedAt)}</span>
-    </a>
+    <div class="w-full aspect-square border-2 flex flex-col items-center justify-center border-border hover:border-accent relative group">
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger
+          class="absolute top-2 right-2 size-8 cursor-pointer hover:bg-muted justify-center items-center flex"
+          onclick={(e: MouseEvent) => e.stopPropagation()}
+        >
+          <iconify-icon icon="mdi:dots-vertical" class="text-2xl"></iconify-icon>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            class="bg-muted outline-hidden p-2 w-40"
+            sideOffset={8}
+          >
+            <DropdownMenu.Item
+              class="px-3 py-1.5 cursor-pointer hover:bg-muted-1 outline-none"
+              onSelect={() => goto(`/board/${board.slug}`)}
+            >
+              edit board
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              class="px-3 py-1.5 cursor-pointer hover:bg-muted-1 outline-none"
+              onSelect={() => deleteBoard(board.slug)}
+            >
+              delete board
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
+
+      <a href={`/board/${board.slug}`} class="flex flex-col items-center justify-center size-full">
+        <p class="font-bold text-accent text-xl">{board.name}</p>
+        <span class="text-fg mt-2">{getRelativeTime(board.updatedAt)}</span>
+      </a>
+    </div>
   {/each}
 
   <Dialog.Root open={createBoardOpen}>

@@ -43,3 +43,11 @@ export async function setEntry(root: FileSystemDirectoryHandle, path: string, da
   await writable.write(JSON.stringify(data, null, 2));
   await writable.close();
 }
+
+export async function deleteEntry(root: FileSystemDirectoryHandle, path: string): Promise<void> {
+  const parts = path.split("/").filter(Boolean);
+  const dirPath = parts.slice(0, -1);
+  const fileName = parts[parts.length - 1];
+  const dirHandle = await getDirectoryHandle(root, dirPath.join("/"));
+  await dirHandle.removeEntry(fileName);
+}
