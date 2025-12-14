@@ -33,6 +33,7 @@
 	},
 	"dependencies": {
 		"@tailwindcss/typography": "^0.5.19",
+		"@vercel/analytics": "^1.6.1",
 		"bits-ui": "^2.14.4",
 		"clsx": "^2.1.1",
 		"hotkeys-js": "^4.0.0-beta.7",
