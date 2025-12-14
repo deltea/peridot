@@ -178,7 +178,10 @@
 <Nav path="boards/{board.name}">
   <div class="flex gap-3">
     <Button onclick={focusOnAddPiece}>+ add piece</Button>
-    <Button variant="secondary">edit board</Button>
+    <Button variant="secondary" class="gap-2">
+      <iconify-icon icon="mingcute:settings-3-fill" class="text-base"></iconify-icon>
+      <span>edit board</span>
+    </Button>
   </div>
 </Nav>
 
