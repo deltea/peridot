@@ -1,5 +1,7 @@
 # peridot
 
+obsidian meets pinterest, store your ideas locally
+
 ## todo list (ordered by priority)
 
 - [ ] zoom in view with spacebar
