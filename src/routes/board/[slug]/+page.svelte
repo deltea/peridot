@@ -149,6 +149,7 @@
     hotkeys("esc", (e) => {
       e.preventDefault();
       isAddingPiece = false;
+      selected = [];
     });
 
     // selection hotkeys
