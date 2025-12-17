@@ -21,7 +21,7 @@
   onmousedown={() => selectPiece(piece)}
   id="piece"
   class={cn(
-    "w-full relative",
+    "w-full relative outline-none",
     { "ring-2 ring-fg": selected }
   )}
 >
