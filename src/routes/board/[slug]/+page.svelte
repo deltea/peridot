@@ -187,7 +187,7 @@
   </div>
 </Nav>
 
-<div class="w-4xl mx-8 h-fit space-y-2">
+<div class="w-4xl mx-8 h-fit space-y-2" style="column-fill: balance;">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
     <Masonry
       items={board.pieces}

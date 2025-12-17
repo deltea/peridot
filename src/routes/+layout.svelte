@@ -14,7 +14,7 @@
 <svelte:head>
 	<title>
 		peridot
-		{path.length > 0 ? ` > ${path[path.length - 1]}` : ""}
+		{path.length > 0 ? ` - ${path[path.length - 1]}` : ""}
 	</title>
 </svelte:head>
 
