@@ -1,19 +1,22 @@
 <script lang="ts">
   import type { Piece } from "$lib/types.js";
   import { cn } from "$lib/utils";
+  import { onMount } from "svelte";
   import SvelteMarkdown from "svelte-markdown";
+  import { fade, scale } from "svelte/transition";
 
-  let { piece, selected, refreshLayout, selectPiece }: {
+  let { piece, selected, isZoomed, refreshLayout, selectPiece }: {
     piece: Piece;
     selected: boolean;
+    isZoomed: boolean;
     refreshLayout: () => void;
     selectPiece: (piece: Piece) => void;
   } = $props();
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
+  role="button"
+  tabindex="0"
   ondragstart={e => e.preventDefault()}
   onmousedown={() => selectPiece(piece)}
   id="piece"
@@ -36,3 +39,17 @@
     <img src={piece.url} alt={piece.caption} onload={refreshLayout} class="w-full object-contain" />
   {/if}
 </div>
+
+{#if isZoomed && piece.type === "image"}
+  <div
+    transition:fade={{ duration: 120 }}
+    class="w-screen h-screen fixed top-0 left-0 bg-black/60 flex justify-center items-center z-50 p-16"
+  >
+    <img
+      transition:scale={{ duration: 120 }}
+      src={piece.url}
+      alt={piece.caption}
+      class="h-full w-full object-contain"
+    />
+  </div>
+{/if}

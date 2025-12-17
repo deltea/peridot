@@ -22,6 +22,7 @@
   let refreshLayout: () => void = $state(() => {});
   let selected: Piece[] = $state([]);
   let isMultiSelect = false;
+  let zoomedInPiece: Piece | null = $state(null);
 
   $effect(() => {
     if (board.pieces) {
@@ -124,6 +125,8 @@
   }
 
   onMount(() => {
+    refreshLayout();
+
     document.addEventListener("paste", handlePaste);
     document.addEventListener("mousedown", clickOutside);
 
@@ -150,6 +153,17 @@
       e.preventDefault();
       isAddingPiece = false;
       selected = [];
+    });
+    hotkeys("space", (e) => {
+      if (getFocusedOnInput()) return;
+      e.preventDefault();
+      if (zoomedInPiece) {
+        zoomedInPiece = null;
+        return;
+      }
+      if (selected.length === 1 && selected[0].type === "image") {
+        zoomedInPiece = selected[0];
+      }
     });
 
     // selection hotkeys
@@ -221,6 +235,7 @@
           <PieceComponent
             {piece}
             selected={selected.includes(piece)}
+            isZoomed={zoomedInPiece === piece}
             {selectPiece}
             {refreshLayout}
           />
