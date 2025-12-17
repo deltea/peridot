@@ -12,6 +12,8 @@
   import Button from "$components/Button.svelte";
   import PlaceholderPieces from "$components/PlaceholderPieces.svelte";
 
+  const gridSizes = ["12em", "15em", "20em", "25em"];
+
   let { data } = $props();
   let board: Board = $state(data.board);
   let isAddingPiece = $state(false);
@@ -190,7 +192,8 @@
     <Masonry
       items={board.pieces}
       stretchFirst={isAddingPiece}
-      gridGap={"0.5rem"}
+      gridGap="0.5rem"
+      colWidth="minmax(min({gridSizes[2]}, 100%), 1fr)"
       bind:refreshLayout
     >
       {#if isAddingPiece}

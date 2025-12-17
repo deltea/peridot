@@ -2,3 +2,7 @@
 - [ ] add context menu to everything
 - [ ] add board setting for masonry grid column count (grid size)
 - [ ] board subsections??????? (for different uses)
+- [ ] better masonry algorithm (balanced height columns)
+- [ ] zoom in view with spacebar
+- [ ] make icons load instantly (local)
+- [ ] make it a pwa!
