@@ -15,7 +15,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   ondragstart={e => e.preventDefault()}
-  onclick={() => selectPiece(piece)}
+  onmousedown={() => selectPiece(piece)}
   id="piece"
   class={cn(
     "w-full relative",

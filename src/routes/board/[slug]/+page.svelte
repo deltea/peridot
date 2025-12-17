@@ -125,7 +125,7 @@
 
   onMount(() => {
     document.addEventListener("paste", handlePaste);
-    document.addEventListener("click", clickOutside);
+    document.addEventListener("mousedown", clickOutside);
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Shift") isMultiSelect = true;

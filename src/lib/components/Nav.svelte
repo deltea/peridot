@@ -7,8 +7,8 @@
   } = $props();
 </script>
 
-<div class="flex justify-between items-center px-4 h-nav bg-transparent w-full fixed bottom-0 left-0 z-50">
-  <div class="flex gap-3 items-center">
+<div class="flex justify-between items-center h-nav w-full fixed bottom-0 left-0 z-50">
+  <div class="flex gap-3 items-center bg-bg h-full px-4">
     <a href="/" class="flex items-center gap-1">
       <header class="font-bold text-sm flex items-center gap-1">
         <img src="/logo.svg" alt="Logo" class="size-3.5" />
@@ -27,6 +27,8 @@
   </div>
 
   {#if children}
-    {@render children()}
+    <div class="h-full px-4 bg-bg flex items-center">
+      {@render children()}
+    </div>
   {/if}
 </div>
