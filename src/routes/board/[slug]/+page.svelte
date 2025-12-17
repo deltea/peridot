@@ -153,6 +153,7 @@
       e.preventDefault();
       isAddingPiece = false;
       selected = [];
+      zoomedInPiece = null;
     });
     hotkeys("space", (e) => {
       if (getFocusedOnInput()) return;
