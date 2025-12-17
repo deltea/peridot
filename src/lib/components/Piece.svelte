@@ -36,7 +36,13 @@
       </a>
     </div>
   {:else if piece.type === "image"}
-    <img src={piece.url} alt={piece.caption} onload={refreshLayout} class="w-full object-contain" />
+    <img
+      src={piece.url}
+      alt={piece.caption}
+      onload={refreshLayout}
+      class="w-full object-contain"
+      loading="lazy"
+    />
   {/if}
 </div>
 
