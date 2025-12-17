@@ -7,7 +7,7 @@
   } = $props();
 </script>
 
-<div class="flex justify-between items-center px-4 h-nav bg-bg w-full fixed bottom-0 left-0 z-50">
+<div class="flex justify-between items-center px-4 h-nav bg-transparent w-full fixed bottom-0 left-0 z-50">
   <div class="flex gap-3 items-center">
     <a href="/" class="flex items-center gap-1">
       <header class="font-bold text-sm flex items-center gap-1">
