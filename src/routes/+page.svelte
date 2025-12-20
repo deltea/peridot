@@ -46,7 +46,7 @@
 
 <div class="grid grid-cols-2 gap-4 w-xl h-fit">
   {#each boards as board}
-    <div class="w-full aspect-square border-2 flex flex-col items-center justify-center border-border hover:border-accent relative group">
+    <div class="w-full aspect-square border-2 flex flex-col items-center justify-center border-border hover:border-fg relative group">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger
           class="absolute top-2 right-2 size-8 cursor-pointer hover:bg-muted justify-center items-center flex"
@@ -79,15 +79,15 @@
       </DropdownMenu.Root>
 
       <a href={`/board/${board.slug}`} class="flex flex-col items-center justify-center size-full">
-        <p class="font-bold text-accent text-xl">{board.name}</p>
+        <p class="font-bold text-fg text-xl">{board.name}</p>
         <span class="text-fg mt-2">{getRelativeTime(board.updatedAt)}</span>
       </a>
     </div>
   {/each}
 
   <Dialog.Root open={createBoardOpen}>
-    <Dialog.Trigger class="w-full aspect-square cursor-pointer border-2 flex gap-2 items-center justify-center border-bg-1 hover:border-accent bg-bg-1 outline-none">
-      <p class="font-bold text-accent text-base">
+    <Dialog.Trigger class="w-full aspect-square cursor-pointer border-2 flex gap-2 items-center justify-center border-bg-1 hover:border-fg bg-bg-1 outline-none">
+      <p class="font-bold text-fg text-base">
         + create board
       </p>
     </Dialog.Trigger>

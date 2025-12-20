@@ -1,26 +1,36 @@
-export async function getFileHandle(root: FileSystemDirectoryHandle, path: string): Promise<FileSystemFileHandle> {
+export async function getFileHandle(root: FileSystemDirectoryHandle, path: string, create: boolean = true): Promise<FileSystemFileHandle | null> {
   let dirHandle = root;
   const parts = path.split("/").filter(Boolean);
   const dirPath = parts.slice(0, -1);
   const fileName = parts[parts.length - 1];
-  for (const part of dirPath) {
-    dirHandle = await dirHandle.getDirectoryHandle(part, { create: true });
+  try {
+    for (const part of dirPath) {
+      dirHandle = await dirHandle.getDirectoryHandle(part, { create });
+    }
+    const handle = await dirHandle.getFileHandle(fileName, { create });
+    return handle;
+  } catch {
+    return null;
   }
-  const handle = await dirHandle.getFileHandle(fileName, { create: true });
-  return handle;
 }
 
-export async function getDirectoryHandle(root: FileSystemDirectoryHandle, path: string): Promise<FileSystemDirectoryHandle> {
+export async function getDirectoryHandle(root: FileSystemDirectoryHandle, path: string, create: boolean = true): Promise<FileSystemDirectoryHandle | null> {
   let dirHandle = root;
   const parts = path.split("/").filter(Boolean);
-  for (const part of parts) {
-    dirHandle = await dirHandle.getDirectoryHandle(part, { create: true });
+  try {
+    for (const part of parts) {
+      dirHandle = await dirHandle.getDirectoryHandle(part, { create });
+    }
+    return dirHandle;
+  } catch {
+    return null;
   }
-  return dirHandle;
 }
 
-export async function getEntries(root: FileSystemDirectoryHandle, path: string): Promise<string[]> {
-  const dirHandle = await getDirectoryHandle(root, path);
+export async function getEntries(root: FileSystemDirectoryHandle, path: string): Promise<string[] | null> {
+  const dirHandle = await getDirectoryHandle(root, path, false);
+  if (!dirHandle) return null;
+
   const entries: string[] = [];
   for await (const [name] of dirHandle.entries()) {
     entries.push(name);
@@ -28,8 +38,10 @@ export async function getEntries(root: FileSystemDirectoryHandle, path: string):
   return entries;
 }
 
-export async function getEntry<T>(root: FileSystemDirectoryHandle, path: string): Promise<T> {
-  const handle = await getFileHandle(root, path);
+export async function getEntry<T>(root: FileSystemDirectoryHandle, path: string): Promise<T | null> {
+  const handle = await getFileHandle(root, path, false);
+  if (!handle) return null;
+
   const file = await handle.getFile();
   const contents = await file.text();
   const data: T = JSON.parse(contents);
@@ -39,6 +51,8 @@ export async function getEntry<T>(root: FileSystemDirectoryHandle, path: string)
 
 export async function setEntry(root: FileSystemDirectoryHandle, path: string, data: object): Promise<void> {
   const handle = await getFileHandle(root, path);
+  if (!handle) return;
+
   const writable = await handle.createWritable();
   await writable.write(JSON.stringify(data, null, 2));
   await writable.close();
@@ -48,6 +62,13 @@ export async function deleteEntry(root: FileSystemDirectoryHandle, path: string)
   const parts = path.split("/").filter(Boolean);
   const dirPath = parts.slice(0, -1);
   const fileName = parts[parts.length - 1];
-  const dirHandle = await getDirectoryHandle(root, dirPath.join("/"));
+
+  const dirHandle = await getDirectoryHandle(root, dirPath.join("/"), false);
+  if (!dirHandle) return;
+
   await dirHandle.removeEntry(fileName);
+}
+
+export async function createDirectory(root: FileSystemDirectoryHandle, path: string): Promise<void> {
+  await getDirectoryHandle(root, path, true);
 }

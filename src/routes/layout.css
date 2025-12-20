@@ -5,19 +5,18 @@
 @theme {
   --color-bg: #000000;
   --color-bg-1: #181818;
-  --color-border: #222222;
   --color-fg: #ffffff;
   --color-fg-1: #cccccc;
-  /* --color-accent: #cba6f7; */
-  --color-accent: #ffffff;
   --color-muted: #252525;
   --color-muted-1: #333333;
+  --color-border: #222222;
+
   --spacing-nav: 3rem;
   --border-3: 3px;
 }
 
 body {
-  @apply bg-bg text-fg text-sm font-mono selection:text-bg selection:bg-accent;
+  @apply bg-bg text-fg text-sm font-mono selection:text-bg selection:bg-fg;
 }
 
 @utility prose-default {
