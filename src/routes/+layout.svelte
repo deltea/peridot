@@ -19,7 +19,7 @@
 </svelte:head>
 
 <main class="min-h-screen flex flex-col">
-	<div class="mb-nav flex justify-center grow py-16">
+	<div class="mt-nav flex justify-center grow py-4">
 		{@render children()}
 	</div>
 </main>

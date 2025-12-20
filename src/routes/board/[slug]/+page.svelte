@@ -91,6 +91,7 @@
             { type: "note", content: text } as NotePiece,
           ];
         }
+        setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
       }
     }
   }
@@ -193,7 +194,7 @@
   });
 </script>
 
-<Nav path="boards/{board.name}">
+<Nav title={board.name}>
   <div class="flex gap-3">
     <Button onclick={focusOnAddPiece}>+ add piece</Button>
     <Button variant="secondary" class="gap-2">
@@ -203,7 +204,7 @@
   </div>
 </Nav>
 
-<div class="w-4xl mx-8 h-fit space-y-2" style="column-fill: balance;">
+<div class="w-4xl mx-8 h-fit">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
     <Masonry
       items={board.pieces}
@@ -213,21 +214,18 @@
       bind:refreshLayout
     >
       {#if isAddingPiece}
-        <div class="bg-bg-1 flex flex-col w-full">
+        <div class="bg-bg-1 p-4 w-full h-26 relative">
           <textarea
             bind:value={newPieceContent}
             bind:this={newPieceInput}
             placeholder="start typing here..."
-            class="w-full p-4 outline-none resize-none"
+            class="w-full outline-none resize-none h-full"
           ></textarea>
 
-          <div class="flex justify-between px-4 pb-4 pt-2">
-            <div></div>
-            <button
-              onclick={addPiece}
-              class="cursor-pointer size-6 bg-fg text-bg font-black text-base"
-            >+</button>
-          </div>
+          <button
+            onclick={addPiece}
+            class="absolute bottom-2 right-2 cursor-pointer size-8 bg-fg text-bg font-black text-xl"
+          >+</button>
         </div>
       {/if}
 
@@ -247,3 +245,12 @@
     <PlaceholderPieces />
   {/if}
 </div>
+
+<!-- <div class="fixed left-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
+  <Button variant="primary" class="gap-2 size-12 justify-center">
+    <iconify-icon icon="mdi:plus" class="text-3xl"></iconify-icon>
+  </Button>
+  <Button variant="secondary" class="gap-2 size-12 justify-center">
+    <iconify-icon icon="mingcute:settings-3-fill" class="text-2xl"></iconify-icon>
+  </Button>
+</div> -->

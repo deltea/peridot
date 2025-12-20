@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Piece } from "$lib/types.js";
   import { cn } from "$lib/utils";
-  import { onMount } from "svelte";
   import SvelteMarkdown from "svelte-markdown";
   import { fade, scale } from "svelte/transition";
 
@@ -26,7 +25,7 @@
   )}
 >
   {#if piece.type === "note"}
-    <p class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere whitespace-pre-wrap">
+    <p class="bg-bg-1 flex flex-col w-full p-4 wrap-anywhere overflow-scroll whitespace-pre-wrap">
       <SvelteMarkdown source={piece.content} />
     </p>
   {:else if piece.type === "link"}

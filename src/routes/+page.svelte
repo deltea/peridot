@@ -32,7 +32,7 @@
   }
 </script>
 
-<Nav path="boards">
+<Nav>
   <div class="flex gap-3">
     <Button onclick={() => createBoardOpen = !createBoardOpen}>
       + create board
@@ -58,6 +58,7 @@
           <DropdownMenu.Content
             class="bg-muted outline-hidden p-2 w-50"
             sideOffset={8}
+            align="start"
           >
             <DropdownMenu.Item
               class="px-3 py-1.5 cursor-pointer hover:bg-muted-1 outline-none flex items-center gap-2"
