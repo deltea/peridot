@@ -8,10 +8,11 @@ obsidian meets pinterest, store your ideas locally
 - [ ] add board setting for masonry grid column count (grid size)
 - [ ] add context menu to everything
 - [ ] board subsections??????? (for different uses)
+- [ ] make icons load instantly (local)
+- [ ] fix issue with first 3 starting piece layouts
 - [ ] better masonry algorithm (balanced height columns)
 - [ ] undo and redo
 - [ ] make it a pwa!
-- [ ] make icons load instantly (local)
 - [x] better error handlign for board loading
 - [x] find an actual design style/theme bc its kinda ass rn
 - [x] zoom in view with spacebar

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="28.254267mm"
+   height="11.81241mm"
+   viewBox="0 0 28.254267 11.81241"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="spike.svg"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="10.094788"
+     inkscape:cx="53.39389"
+     inkscape:cy="22.33826"
+     inkscape:window-width="2544"
+     inkscape:window-height="1348"
+     inkscape:window-x="12"
+     inkscape:window-y="52"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-53.197487,-126.36861)">
+    <path
+       style="fill:#000000;fill-opacity:1;stroke-width:2;stroke-miterlimit:5"
+       d="M 81.451752,126.36861 66.993514,138.18102 53.197487,126.36861 Z"
+       id="path1" />
+  </g>
+</svg>
