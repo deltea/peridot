@@ -23,11 +23,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
-     inkscape:zoom="0.91309774"
-     inkscape:cx="-98.565571"
-     inkscape:cy="173.03734"
-     inkscape:window-width="1688"
-     inkscape:window-height="1015"
+     inkscape:zoom="2.5307357"
+     inkscape:cx="19.164388"
+     inkscape:cy="89.499667"
+     inkscape:window-width="2544"
+     inkscape:window-height="1348"
      inkscape:window-x="12"
      inkscape:window-y="52"
      inkscape:window-maximized="0"
@@ -35,21 +35,29 @@
   <g
      transform="translate(25.6,25.28906) scale(0.8,0.8)"
      id="g3">
+    <rect
+       style="fill:#222222;fill-opacity:1;stroke-width:52.7879;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:5;paint-order:stroke fill markers"
+       id="rect1"
+       width="297.88858"
+       height="296.58493"
+       x="-20.944292"
+       y="-21.847151"
+       ry="46.705509" />
     <g
-       transform="matrix(4.98783,0,0,4.98783,1e-5,-2.14762)"
+       transform="matrix(3.4342851,0,0,3.4342851,39.867766,37.068738)"
        id="g1"
-       style="font-family:none;mix-blend-mode:normal;fill:none;fill-rule:nonzero;stroke:#ffffff;stroke-width:11.90625874;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:5;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;fill-opacity:1">
+       style="font-family:none;mix-blend-mode:normal;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:11.9063;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:5;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
       <g
          transform="translate(-82.53428,-111.00705)"
          id="layer1"
-         style="stroke-width:11.90625874;stroke-dasharray:none;stroke:#ffffff;stroke-opacity:1;fill:none;fill-opacity:1">
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:11.9063;stroke-dasharray:none;stroke-opacity:1">
         <path
            d="m 108.19672,116.41997 c 13.58353,7.36532 20.96805,17.10801 20.89953,33.91808 -14.24817,9.19277 -27.42057,8.98991 -41.79907,0 -0.06583,-16.46882 6.91996,-26.39481 20.89954,-33.91808 z"
            id="path3"
            fill-opacity="0"
            fill="#ffffff"
            stroke="#ffffff"
-           style="stroke-width:11.90625874;stroke-dasharray:none;stroke:#ffffff;stroke-opacity:1;fill:none;fill-opacity:1" />
+           style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:11.9063;stroke-dasharray:none;stroke-opacity:1" />
       </g>
     </g>
   </g>
