@@ -13,6 +13,7 @@
   import PlaceholderPieces from "$components/PlaceholderPieces.svelte";
 
   const gridSizes = ["12em", "15em", "20em", "25em"];
+  const validFileTypes = ["image/png", "image/jpeg", "image/gif"];
 
   let { data } = $props();
   let board: Board = $state(data.board);
@@ -125,6 +126,26 @@
     tick().then(() => newPieceInput?.focus());
   }
 
+  async function onDrop(e: DragEvent) {
+    e.preventDefault();
+    const files = e.dataTransfer?.files;
+    if (files && files.length > 0) {
+      if (validFileTypes.includes(files[0].type)) {
+        console.log(files[0]);
+        const imgUrl = URL.createObjectURL(files[0]);
+        board.pieces = [
+          ...board.pieces,
+          { type: "image", url: imgUrl } as ImagePiece,
+        ];
+        await setEntry(data.root, `boards/${page.params.slug}.peridot`, board);
+      } else {
+        console.error("invalid file type");
+      }
+    } else {
+      console.error("no file dropped");
+    }
+  }
+
   onMount(() => {
     refreshLayout();
 
@@ -137,6 +158,11 @@
     document.addEventListener("keyup", (e) => {
       if (e.key === "Shift") isMultiSelect = false;
     });
+
+    document.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+    document.addEventListener("drop", onDrop);
 
     // hotkeys
     hotkeys.filter = () => true;
