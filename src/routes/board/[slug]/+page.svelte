@@ -230,7 +230,7 @@
   </div>
 </Nav>
 
-<div class="w-4xl mx-8 h-fit">
+<div class="w-4xl mx-8 h-fit mt-1">
   {#if board.pieces && board.pieces.length > 0 || isAddingPiece}
     <Masonry
       items={board.pieces}
