@@ -6,9 +6,10 @@ export const load: PageLoad = async ({ parent }) => {
   const root = (await parent()).root;
 
   const boards: Board[] = [];
-  const entries = await getEntries(root, "boards") as string[];
+  let entries = await getEntries(root, "boards") as string[];
   if (!entries) {
     await createDirectory(root, "boards");
+    entries = await getEntries(root, "boards") as string[];
   }
 
   await Promise.all(
